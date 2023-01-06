@@ -34,7 +34,7 @@ const postData = async (req, res) => {
 
 const putData = async (req, res) => {
   // Note tidak bisa menggunakan method put pada form jadi diganti post
-  const data = User.find({ _id: req.params.id });
+  const data = await User.find({ _id: req.params.id });
   const datax = await User.updateOne(data, {
     $set: {
       name: req.body.name,
@@ -48,8 +48,16 @@ const putData = async (req, res) => {
 // @dec DELETE
 // @access public
 
-const deleteData = (req, res) => {
-  // res.json({ message: "delete post", data: req.params.id });
+const deleteData = async (req, res) => {
+  const data = User.find({ _id: req.params.id });
+  const datax = await User.deleteOne(data);
+  res.json({ message: "delete post", data: req.params.id });
+};
+
+const deletepage = async (req, res) => {
+  const data = User.find({ _id: req.params.id });
+  const datax = await User.deleteOne(data);
+  res.render("../views/berhasil");
 };
 
 const details = async (req, res) => {
@@ -78,6 +86,7 @@ const updateData = async (req, res) => {
 };
 module.exports = {
   getData,
+  deletepage,
   postData,
   deleteData,
   putData,

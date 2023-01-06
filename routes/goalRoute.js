@@ -7,13 +7,14 @@ const {
   putData,
   details,
   updateData,
+  deletepage,
   formData,
 } = require("../controllers/goalController");
 
 router.route("/").get(getData);
 router.route("/form").get(formData).post(postData);
 router.route("/update/:id").get(updateData).post(putData);
-// .delete(deleteData);
+router.route("/hapus/:id").get(deletepage);
 router.route("/detail/:id").get(details);
 
 module.exports = router;
