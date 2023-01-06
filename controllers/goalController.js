@@ -32,15 +32,24 @@ const postData = async (req, res) => {
 // @dec PUT
 // @access public
 
-const putData = (req, res) => {
-  res.json({ message: "update post", data: req.params.id });
+const putData = async (req, res) => {
+  // Note tidak bisa menggunakan method put pada form jadi diganti post
+  const data = User.find({ _id: req.params.id });
+  const datax = await User.updateOne(data, {
+    $set: {
+      name: req.body.name,
+      email: req.body.email,
+    },
+  });
+
+  res.render("../views/berhasil");
 };
 
 // @dec DELETE
 // @access public
 
 const deleteData = (req, res) => {
-  res.json({ message: "delete post", data: req.params.id });
+  // res.json({ message: "delete post", data: req.params.id });
 };
 
 const details = async (req, res) => {
@@ -54,4 +63,25 @@ const details = async (req, res) => {
 const formData = (req, res) => {
   res.render("../views/form");
 };
-module.exports = { getData, postData, deleteData, putData, details, formData };
+
+const updateData = async (req, res) => {
+  const data = await User.find({ _id: req.params.id });
+
+  data.forEach((element) => {
+    res.render("../views/update", {
+      name: element.name,
+      email: element.email,
+    });
+  });
+
+  // res.json(data);
+};
+module.exports = {
+  getData,
+  postData,
+  deleteData,
+  putData,
+  details,
+  formData,
+  updateData,
+};
